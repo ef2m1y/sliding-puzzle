@@ -1,16 +1,16 @@
+const nums = [];
 const board = [];
-const divList = [];
 for (let y = 0; y < 4; y++) {
+    nums[y] = [];
     board[y] = [];
-    divList[y] = [];
     for (let x = 0; x < 4; x++) {
-        board[y][x] = y * 4 + x + 1;
-        divList[y][x] = null;
+        nums[y][x] = y * 4 + x + 1;
+        board[y][x] = null;
     }
 }
-board[3][3] = 0;
+nums[3][3] = 0;
 
-const init = () => {
+const prepareBoard = () => {
     for (let y = 0; y < 4; y++) {
         for (let x = 0; x < 4; x++) {
             const div = document.createElement("div");
@@ -29,21 +29,46 @@ const init = () => {
                 alignItems: "center",
                 justifyContent: "center"
             });
-            divList[y][x] = div;
+            // Save div elements to board.
+            board[y][x] = div;
         }
     }
 };
 
+const swapNums = () => {
+    // swap 10000 times
+    for (let i = 0; i < 500; i++) {
+        let from;
+        let to;
+        // 0 <= Math.random() * 16 < 16
+        // 0 <= Math.trunc(Math.random() * 16) <= 15
+        do {
+            from = Math.trunc(Math.random() * 16);
+            to = Math.trunc(Math.random() * 16);
+        } while (from === to);
+        // alert("from: " + from + "\n" + "Math.trunc(from / 4): " + 
+            // Math.trunc(from / 4) + "\n" + "from % 4: " + from % 4);
+        [
+            nums[Math.trunc(from / 4)][from % 4],
+            nums[Math.trunc(to / 4)][to % 4]
+        ] = [
+            nums[Math.trunc(to / 4)][to % 4],
+            nums[Math.trunc(from / 4)][from % 4]
+        ]
+    }
+}
+
 const showBoard = () => {
     for (let y = 0; y < 4; y++) {
         for (let x = 0; x < 4; x++) {
-            divList[y][x].textContent = typeof board[y][x] ==="number" 
-                && board[y][x] !== 0 ? board[y][x] : "";
+            // write nums on board
+            board[y][x].textContent = nums[y][x] !== 0 ? nums[y][x] : "";
         }
     }
 }
 
 onload = () => {
-    init();
+    prepareBoard();
+    swapNums();
     showBoard();
 }
