@@ -1,3 +1,5 @@
+// TODO: refactoring
+// TODO: Rewrite with TypeScript
 const nums = [];
 const board = [];
 for (let y = 0; y < 4; y++) {
@@ -42,7 +44,7 @@ const prepareBoard = () => {
 };
 
 const swapNums = () => {
-    // swap 10000 times
+    // swap 500 times
     for (let i = 0; i < 500; i++) {
         let from;
         let to;
@@ -62,16 +64,33 @@ const swapNums = () => {
             nums[Math.trunc(from / 4)][from % 4]
         ]
     }
-}
+};
 
 const showBoard = () => {
+    let clear = true;
     for (let y = 0; y < 4; y++) {
         for (let x = 0; x < 4; x++) {
             // write nums on board
             board[y][x].textContent = nums[y][x] !== 0 ? nums[y][x] : "";
+
+            if (x !== 3 || y !== 3) {
+                if (nums[y][x] !== y * 4 + x + 1) {
+                    clear = false;
+                }
+            }
         }
     }
-}
+
+    if (clear) {
+        // disenable any operation
+        ex = 999;
+        for (let y = 0; y < 4; y++) {
+            for (let x = 0; x < 4; x++) {
+                board[y][x].style.backgroundColor = "#080";
+            }
+        }
+    }
+};
 
 // initial empty coordinates
 let ex = 3, ey = 3;
@@ -89,4 +108,4 @@ const ondown = (x, y) => {
 onload = () => {
     prepareBoard();
     showBoard();
-}
+};
