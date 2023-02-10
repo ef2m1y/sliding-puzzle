@@ -11,6 +11,8 @@ for (let y = 0; y < 4; y++) {
 nums[3][3] = 0;
 
 const prepareBoard = () => {
+    swapNums();
+
     for (let y = 0; y < 4; y++) {
         for (let x = 0; x < 4; x++) {
             const div = document.createElement("div");
@@ -31,6 +33,10 @@ const prepareBoard = () => {
             });
             // Save div elements to board.
             board[y][x] = div;
+
+            board[y][x].onpointerdown = () => {
+                ondown(x, y);
+            };
         }
     }
 };
@@ -40,11 +46,11 @@ const swapNums = () => {
     for (let i = 0; i < 500; i++) {
         let from;
         let to;
-        // 0 <= Math.random() * 16 < 16
-        // 0 <= Math.trunc(Math.random() * 16) <= 15
+        // 0 <= Math.random() * 15 < 15
+        // 0 <= Math.trunc(Math.random() * 15) <= 14
         do {
-            from = Math.trunc(Math.random() * 16);
-            to = Math.trunc(Math.random() * 16);
+            from = Math.trunc(Math.random() * 15);
+            to = Math.trunc(Math.random() * 15);
         } while (from === to);
         // alert("from: " + from + "\n" + "Math.trunc(from / 4): " + 
             // Math.trunc(from / 4) + "\n" + "from % 4: " + from % 4);
@@ -67,8 +73,20 @@ const showBoard = () => {
     }
 }
 
+// initial empty coordinates
+let ex = 3, ey = 3;
+const ondown = (x, y) => {
+    if (Math.abs(ex - x) + Math.abs(ey - y) === 1) {
+        nums[ey][ex] = nums[y][x];
+        nums[y][x] = 0;
+        // update empty coordinates
+        ex = x;
+        ey = y;
+    }
+    showBoard();
+};
+
 onload = () => {
     prepareBoard();
-    swapNums();
     showBoard();
 }
