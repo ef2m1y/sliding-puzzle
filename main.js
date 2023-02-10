@@ -1,13 +1,15 @@
 const board = [];
+const divList = [];
 for (let y = 0; y < 4; y++) {
     board[y] = [];
+    divList[y] = [];
     for (let x = 0; x < 4; x++) {
         board[y][x] = y * 4 + x + 1;
+        divList[y][x] = null;
     }
 }
 board[3][3] = 0;
 
-// UI
 const init = () => {
     for (let y = 0; y < 4; y++) {
         for (let x = 0; x < 4; x++) {
@@ -27,10 +29,21 @@ const init = () => {
                 alignItems: "center",
                 justifyContent: "center"
             });
+            divList[y][x] = div;
         }
     }
 };
 
-window.onload = () => {
+const showBoard = () => {
+    for (let y = 0; y < 4; y++) {
+        for (let x = 0; x < 4; x++) {
+            divList[y][x].textContent = typeof board[y][x] ==="number" 
+                && board[y][x] !== 0 ? board[y][x] : "";
+        }
+    }
+}
+
+onload = () => {
     init();
+    showBoard();
 }
